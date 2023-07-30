@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
+import os
+import datetime
+
 class Reverse_OD():
     def __init__(self,mu,num_station, get_in, get_out):
         self.num_station = num_station
@@ -33,11 +36,21 @@ class Reverse_OD():
                         Y[i] = 0
         return
 
+    def print_ans(self):
+        print(self.Dataframe)
+        output_dir = os.listdir('output')
+        if len(output_dir)==0:
+            index = 1
+        else:
+            index = len(output_dir)+1
+        self.Dataframe.to_excel('output/ans-'+str(index)+'.xlsx')
+
+
 if __name__ =="__main__":
-    maxN = 16
-    get_in = [36,25,30,38,10,3,4,6,4,10,2,11,7,5,1,0]
-    get_out = [0,1,2,1,3,5,7,5,16,8,4,23,27,42,16,32]
+    maxN = 16   # 表示有多少个站
+    get_in = [36,25,30,38,10,3,4,6,4,10,2,11,7,5,1,0]   # 此处为上车人数
+    get_out = [0,1,2,1,3,5,7,5,16,8,4,23,27,42,16,32]   # 此处为下车人数
     mu = 6 # this is a question,because you need plenty of local data to ensure it is right.
     Reverse_OD1 = Reverse_OD(mu, maxN, get_in, get_out)
     Reverse_OD1.calculation()
-    print(Reverse_OD1.Dataframe)
+    Reverse_OD1.print_ans()
